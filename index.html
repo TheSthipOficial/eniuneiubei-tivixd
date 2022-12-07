@@ -1,0 +1,208 @@
+<?php
+function base64($string)
+{
+$output = false;
+$encrypt_method = "AES-256-CBC";
+$secret_key = 'Tu KEY secreta';
+$secret_iv = 'Tu IV secreta';
+$key = hash('sha256', $secret_key);
+$iv = substr(hash('sha256', $secret_iv), 0, 16);
+$output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+$output = base64_encode($output);
+return $output;
+}	
+?>
+<?php
+session_start();
+/* DECLARE VARIABLES */
+$username = 'stpstore';
+$password = 'stpstore';
+$random1 = 'secret_key1';
+$random2 = 'secret_key2';
+$hash = md5($random1 . $password . $random2);
+$self = $_SERVER['REQUEST_URI'];
+/* USER LOGOUT */
+if(isset($_GET['logout']))
+{
+	unset($_SESSION['login']);
+}
+/* USER IS LOGGED IN */
+if (isset($_SESSION['login']) && $_SESSION['login'] == $hash)
+{
+	logged_in_msg($username);
+}
+/* FORM HAS BEEN SUBMITTED */
+else if (isset($_POST['submit']))
+{
+	if ($_POST['username'] == $username && $_POST['password'] == $password)
+	{
+		//IF USERNAME AND PASSWORD ARE CORRECT SET THE LOGIN SESSION
+		$_SESSION["login"] = $hash;
+		header("Location: $_SERVER[PHP_SELF]");
+	}
+	else
+	{
+		// DISPLAY FORM WITH ERROR
+		display_login_form();
+		display_error_msg();
+	}
+}
+/* SHOW THE LOGIN FORM */
+else
+{
+	display_login_form();
+}
+/* TEMPLATES */
+function display_login_form()
+{
+?>
+ <!DOCTYPE html>
+	<html>
+		<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>STPFEMBEDMP4SCRIPT</title>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/ufilestorage/b/master/bootstrap/css/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/ufilestorage/b/master/bootstrap/css/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/assets/3.css">
+        </head>
+        </head>
+		<body>
+			<div class="trail">
+				<canvas id="world"></canvas>
+			</div>
+	<div class="container" style="opacity:1;">
+			<div class="row col-md-offset-2 col-md-8 login-error">
+			<div class="alert alert-danger" role="alert">
+				<strong>
+					<font size="3">The following errors were found</font>	
+				</strong>
+				<font color="blue;" size="3">
+                
+					<ul type="square">
+					</ul>
+				</font>
+			</div>
+		</div>
+		
+	  	<div class="row-fluid">
+	  		<div class="col-sm-offset-2 col-md-offset-4 col-sm-8 col-md-4 col-xs-12 login-form">
+	  			<div class="row-fluid">
+	  				<div class="col-sm-12 logo-login-form">
+	  				<div class="logo text-center"><img src="/assets/images/6.png" alt=""></img></div>
+                      <center>
+                      <div style="background-color: white; font-family: Consolas, &quot;Courier New&quot;, monospace; line-height: 19px; white-space: pre;"><div style="background-color: black; line-height: 19px; text-align: center;"><span style="color: white; font-size: xx-small;"><b><i>CREATED BY THE STHIP TECNOLOGY</i></b></span></div></div>
+                      <div class="form-group"><p class="btn-xs btn-danger">Version Final 2.0</p></div>
+	  				</div>
+	  			</div>
+	  			<div class="row-fluid">
+	  				<div class="col-sm-12">
+	<?php echo '<form action="' . isset($self) . '" method="post">' .
+			 '<label for="username"><div style="background-color: black; font-family: Consolas, &quot;Courier New&quot;, monospace; font-size: 14px; line-height: 19px; white-space: pre;"><div style="background-color: black; line-height: 19px;"><span style="color: #B98504;"><b><i>USUARIO:</i></b></span></div></div></label>' .
+			 '<input type="text" name="username" id="username">' .
+			 '<label for="password"><div style="background-color: black; font-family: Consolas, &quot;Courier New&quot;, monospace; font-size: 14px; line-height: 19px; white-space: pre;"><span style="color: #B98504;"><b>CONTRASEÑA:</b></span></div></label>' .
+			 '<input type="password" name="password" id="password">' .
+			 '<input type="submit" name="submit" value="Iniciar" class="btn btn-default primary sub">' .
+		 '</form>';
+}
+function logged_in_msg($username)
+{
+?>
+  </div>
+	  			      </div>
+	  			   <div>
+	  			</div>
+	  		</div>
+	  	</div>
+	</div>
+</body>
+</html> 
+
+<!DOCTYPE html>
+<html>
+<span style="color: black;"><br /><body style="background-color: black;">
+</body>
+<header>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-#201B1">
+  <div class="logo text-center"><img src="/assets/images/6.png" alt=""></img></div>
+      <a class="btn btn-warning" href="?logout=true" role="button">Cerrar Sesion</a>
+  
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      </li>
+      </li>
+    </ul>
+  </div>
+</nav>
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>STPFEMBEDMP4SCRIPT 2.0</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" type="text/css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" />
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+</head>
+<header>
+   
+</head>
+
+	<title>STP FEMBED A MP4</title>
+    <body style="background-color:black ;">
+<body>
+	<div class="container">
+    				<div class="row">
+<font size="3"><form name="form" action="" method="post" enctype="multipart/form-data">
+	<label style="color: #FFFFFF;">𝓘𝓓 𝓨𝓐𝓝𝓓𝓔𝓧 :</label><br><textarea class="form-control" name="url" cols="80" rows="1"></textarea><br><br>
+<input type="submit" class="btn btn-warning" value="Encriptar" title="to post" />
+</form></font>		
+			<?php
+				if (!empty($_POST)) {
+					extract($_POST);
+					$urlEncode = base64($url);
+				}
+			?>					
+
+
+						        <div class="form-group">			
+<label style="color: #FFFFFF  ;">𝓛𝓘𝓝𝓚 𝓔𝓜𝓑𝓔𝓓:</label><br><textarea class="form-control" cols="100" rows="4"><?php echo "https://subdominio/y.php?v=".$url;?>.mp4</textarea><br><br>
+				    
+						        <div class="form-group">
+<label style="color: #FFFFFF  ;">𝓘𝓕𝓡𝓐𝓜𝓔 :</label><br><textarea class="form-control" cols="100" rows="4"><?php echo "<iframe src='https://subdominio//v.php?v=".$url;?>.mp4' frameborder='0' allowfullscreen='true' width='640' height='320'></iframe></textarea><br><br>
+
+<center>
+<br /><div><p style="text-align: center;"><span style="color: #B98504;"><br /></span></p><p style="text-align: center;"></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEhm6TFSLl1y4t6TKHLqFf7iQ2OrrvuFCKupL1WIFq3MQTel9tHTsRR1nWTBRfv44yFIUXKmO3Mbrt7L627n94DvgZR0n0Cv1maLPalwzwQU6s7pvChS1VVjiQnTY4ZQjcOewucrRe66k8dyUy_X--PNfv4F9UhiDQxnVN2-vRhWEhGQs58T7l4MJveYYA" style="margin-left: 1em; margin-right: 1em;"><span style="color: #B98504;"><img alt="" data-original-height="88" data-original-width="88" height="58" src="https://blogger.googleusercontent.com/img/a/AVvXsEhm6TFSLl1y4t6TKHLqFf7iQ2OrrvuFCKupL1WIFq3MQTel9tHTsRR1nWTBRfv44yFIUXKmO3Mbrt7L627n94DvgZR0n0Cv1maLPalwzwQU6s7pvChS1VVjiQnTY4ZQjcOewucrRe66k8dyUy_X--PNfv4F9UhiDQxnVN2-vRhWEhGQs58T7l4MJveYYA=w58-h58" width="58" /></span></a></div><div class="separator" style="clear: both; text-align: center;"><span style="color: #B98504;"><br /></span></div><div class="separator" style="clear: both; text-align: center;"><b style="font-family: courier; font-size: large;"><span style="color: #B98504;">CREATED THE STHIP TECNOLOGY</span></b></div><p></p><p style="text-align: center;"><span style="color: #B98504; font-family: courier; font-size: medium;"><b><span>COMPARTIDO MEDIANTE TEGNOLOGIAS&nbsp; DE STP STOR</span><span>E</span></b></span></p></div>
+</div>
+
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-9">
+									<div id="headline-chart" class="ct-chart"></div>
+								</div>
+								<div class="col-md-3">
+
+		<div class="clearfix"></div>
+		<footer>
+			<div class="container-fluid">
+            <div class="form-group">
+			</div>
+		</footer>
+	</div>
+
+</body>
+
+</html>
+		</script>
+
+		<hr>
+		<footer class="footer">
+		</footer>
+	</div><!-- /.container -->
+		<?php
+	}
+function display_error_msg()
+{
+	echo '<p>Username or password is invalid</p>';
+}
+?>
+</body>
+</html>
